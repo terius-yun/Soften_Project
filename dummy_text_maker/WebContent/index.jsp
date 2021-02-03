@@ -7,19 +7,23 @@
 		<meta charset="UTF-8">
         <title>Document</title>
         <style>
+       		body{
+       			width: 958px;
+       			margin: auto;
+       		}
             .centerText{
                 text-align: center;
             }
             .centerTextTitle{
-                margin-top: 200px;
+                margin-top: 84px;
                 margin-bottom: 20px;
             }
             .centerTextSubtitle{
                 margin-bottom: 72px;
             }
-            #button_group1{margin-left: 20%; width: 20%; float: left;}
-            #button_group2{width: 20%; float: left;}
-            #button_group3{width: 20%; float: left;}
+            #button_group1{width: 38%; float: left;}
+            #button_group2{width: 38%; float: left;}
+            #button_group3{width: 24%; float: right;}
             .menu{/*pupose title단*/
                 border: 1.3px solid;
                 width: 290px;
@@ -78,12 +82,26 @@
                 background-color: #fff;
                 outline: none;
             }
-            
+            .textLine{
+            	margin-top: 376px;
+            	margin-bottom: 70px;
+            }
+            #copyBtn{
+            	float: right;
+            }
+            #dummyText{
+            	width:90%;
+            	font-size: 18px;
+            	color: #666;
+            }
+            #dummyText >p{
+            	margin: 0px;
+            }
             footer{
                 position: absolute;
-                top: 800px;
+                top: 898px;
                 bottom: 44px;
-                width: 100%;
+                width: 958px;
                 text-align: center;
                 clear: both;
             }
@@ -91,7 +109,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
         $(document).ready(function(){
-            $(".purposeMenu").click(function(){
+            $(".purposeMenu").click(function(){//슬라이드 이벤트
                 
                 var submenu = $(".hidePurposelist");
                 
@@ -118,7 +136,7 @@
         });
         var purpose;
         var volume
-        function selectPurpose(i){  
+        function selectPurpose(i){//셀렉트 이벤트
                 if(i ==1){
                     purpose ="전자제품";
                 }else if(i ==2){
@@ -135,7 +153,7 @@
                 $(".hidePurposelist").css("width","208px");
                 $(".hidePurposelist").slideUp();
         }
-        function selectVolume(i){  
+        function selectVolume(i){  //셀렉트 이벤트
                 if(i ==1){
                     volume ="조금만";
                 }else if(i ==2){
@@ -152,14 +170,42 @@
                 $(".hideVolumelist").css("width","208px");
                 $(".hideVolumelist").slideUp();
         }
-//구현중 커밋.
-//         function createDTMBtn(){
-//         	var form = document.createElement('form');
-//         	form.setAttribute('method', 'get');
-//         	form.setAttribute('action', 'TextOutputAction.do');
-//         	document.charset = "utf-8";
-//             console.log("만들기 버튼 클릭됨.");
-//         }
+        function createDTMBtn(){//텍스트 만들기 이벤트
+        	var form = document.createElement('form');
+        	form.setAttribute('method', 'get');
+        	form.setAttribute('action', 'TextOutputAction.do');
+        	document.charset = "utf-8";
+        	
+        	var purposeField = document.createElement('input');
+        	purposeField.setAttribute('type', 'hidden');
+        	purposeField.setAttribute('name', "purpose");
+        	purposeField.setAttribute('value', purpose);
+			form.appendChild(purposeField);
+			document.body.appendChild(form);
+			
+			var volumeField = document.createElement('input');
+			volumeField.setAttribute('type', 'hidden');
+			volumeField.setAttribute('name', "volume");
+			volumeField.setAttribute('value', volume);
+			form.appendChild(volumeField);
+			document.body.appendChild(form);
+			form.submit();
+            console.log("만들기 버튼 클릭됨.");
+        }
+        
+        function copyText() {
+        	var obj = document.getElementById("dummyText");
+        	
+        	var range = document.createRange();
+        	range.selectNode(obj.childNodes[0]); //텍스트 정보를 Range 객체에 저장
+        	
+        	var sel = window.getSelection();
+        	sel.removeAllRanges(); //기존 선택정보 삭제
+        	sel.addRange(range); //텍스트 정보 선택
+        	
+        	document.execCommand("copy"); //복사
+        	sel.removeRange(range); //선택 정보 삭제
+		}
         
         </script>
     </head>
@@ -197,13 +243,30 @@
             </ul>
         </div>
         
+        <c:set var="take_db" value="${requestScope.text}"/>
         <div class="button_group" id="button_group3">
-            <button class="makeDT" onclick="createDTMBtn()">더미텍스트 만들기</button>
+        <button class="makeDT" onclick="createDTMBtn()">
+	        <c:choose>
+	        	<c:when test="${empty take_db}">
+	        		더미텍스트 만들기
+	        	</c:when>
+	        	<c:otherwise>
+	        		다시 만들기
+	        	</c:otherwise>
+	        </c:choose>
+        </button>
         </div>
-        <c:forEach var="text" items="${requestScope.text}">
-				<p>${text}</p>
-		</c:forEach>
-
+        
+        <c:if test="${not empty take_db}">
+        		<hr class="textLine">
+        		<button id="copyBtn" onclick="copyText()">복사</button>
+        </c:if>
+        <div id="dummyText">
+	        <c:forEach var="text" items="${requestScope.text}">
+					${text}
+			</c:forEach>
+		</div>
+		
         <footer style="font-size: 15px; color: #444;">SOFTEN PJT © MIB</footer>
 			
 	</body>
