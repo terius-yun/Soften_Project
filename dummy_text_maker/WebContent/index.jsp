@@ -91,12 +91,29 @@
             }
             #dummyText{
             	width:90%;
+            	height:200px;
+            	overflow: auto;
             	font-size: 18px;
             	color: #666;
             }
             #dummyText >p{
             	margin: 0px;
             }
+            #last_3btn{
+            	margin-top: 20px;
+            }
+            .afterTextBtn{
+            	width: 172px;
+  				height: 40px;
+  				border: solid 1.3px;
+            	border-radius: 8px;
+            	font-size: 18px;
+            	outline: none;
+            }
+            #contactUs{
+            	float: right;
+            }
+            
             footer{
                 position: absolute;
                 top: 898px;
@@ -135,13 +152,22 @@
             });
         });
         var purpose;
-        var volume
+        <c:set var="purpose" value="${requestScope.purpose}"/>
+		    	<c:if test="${!empty purpose}">
+		    		purpose = "${purpose}";
+		    	</c:if>
+        var volume;
+        <c:set var="volume" value="${requestScope.volume}"/>
+        		<c:if test="${!empty volume}">
+		    		volume = ${volume};
+		    	</c:if>
+        
         function selectPurpose(i){//셀렉트 이벤트
-                if(i ==1){
+                if(i == 1){
                     purpose ="전자제품";
-                }else if(i ==2){
+                }else if(i == 2){
                     purpose ="생활용품/잡화";
-                }else if(i ==3){
+                }else if(i == 3){
                     purpose ="포스터/공모전";
                 }
                 if(!$(".selectedPupose").is(":visible")){
@@ -154,22 +180,25 @@
                 $(".hidePurposelist").slideUp();
         }
         function selectVolume(i){  //셀렉트 이벤트
-                if(i ==1){
-                    volume ="조금만";
-                }else if(i ==2){
-                    volume ="적당히";
-                }else if(i ==3){
-                    volume ="많이";
-                }
-                if(!$(".selectedVolume").is(":visible")){
+        		volume = i;
+        		var volumePrint;
+        		if(volume == 1){
+        			volumePrint="조금만"
+        		}else if(volume == 2){
+        			volumePrint="적당히"
+        		}else if(volume == 3){
+        			volumePrint="많이"
+        		}
+        		if(!$(".selectedVolume").is(":visible")){
                     $(".selectedVolume").css("display","inline-block");
                 }
-                document.getElementById("volumeTitle").innerText = volume;
+                document.getElementById("volumeTitle").innerText = volumePrint;
                 $(".volumeMenu").css("width","208px").css("display","inline-block");
                 $("#volumeArrow").css("margin-left","162px");
                 $(".hideVolumelist").css("width","208px");
                 $(".hideVolumelist").slideUp();
         }
+        
         function createDTMBtn(){//텍스트 만들기 이벤트
         	var form = document.createElement('form');
         	form.setAttribute('method', 'get');
@@ -193,7 +222,7 @@
             console.log("만들기 버튼 클릭됨.");
         }
         
-        function copyText() {
+        function copyText() {// 텍스트 복사
         	var obj = document.getElementById("dummyText");
         	
         	var range = document.createRange();
@@ -205,6 +234,64 @@
         	
         	document.execCommand("copy"); //복사
         	sel.removeRange(range); //선택 정보 삭제
+		}
+        <c:set var="totalMnL" value="${requestScope.totalMnL}"/>
+        	var moreVol;
+        	<c:choose>
+		    	<c:when test="${empty totalMnL}">
+		    		totalMnL = 0;
+		    	</c:when>
+		    	<c:otherwise>
+		    		totalMnL = ${totalMnL};
+		    	</c:otherwise>
+		    </c:choose>
+        function MorLText(i) {//텍스트 추가 혹은 소거 요청
+        	var form = document.createElement('form');
+        	form.setAttribute('method', 'get');
+        	form.setAttribute('action', 'TextOutputAction.do');
+        	document.charset = "utf-8";
+        	
+        	var purposeField = document.createElement('input');
+        	purposeField.setAttribute('type', 'hidden');
+        	purposeField.setAttribute('name', "purpose");
+        	purposeField.setAttribute('value', purpose);
+			form.appendChild(purposeField);
+			document.body.appendChild(form);
+			
+			var volumeField = document.createElement('input');
+			volumeField.setAttribute('type', 'hidden');
+			volumeField.setAttribute('name', "volume");
+			volumeField.setAttribute('value', volume);
+			form.appendChild(volumeField);
+			document.body.appendChild(form);
+			
+			var totalMnLField = document.createElement('input');
+			totalMnLField.setAttribute('type', 'hidden');
+			totalMnLField.setAttribute('name', "totalMnL");
+			totalMnLField.setAttribute('value', totalMnL);
+			form.appendChild(totalMnLField);
+			document.body.appendChild(form);
+			
+			var requestMnLField = document.createElement('input');
+			requestMnLField.setAttribute('type', 'hidden');
+			requestMnLField.setAttribute('name', "requestMnL");
+			requestMnLField.setAttribute('value', i);
+			form.appendChild(requestMnLField);
+			document.body.appendChild(form);
+			<c:set var="totalMnL" value="${requestScope.totalMnL}"/>
+				<c:choose>
+					<c:when test="${totalMnL eq 0}">
+						if(i == 1){
+							alert("제일 적은 양이에요.");
+						}else{
+							form.submit();
+						}
+					</c:when>
+					<c:otherwise>
+						form.submit();
+				    </c:otherwise>
+				</c:choose>
+            console.log("조금 더, 너무 많아요 버튼 클릭됨.");
 		}
         
         </script>
@@ -245,28 +332,34 @@
         
         <c:set var="take_db" value="${requestScope.text}"/>
         <div class="button_group" id="button_group3">
-        <button class="makeDT" onclick="createDTMBtn()">
-	        <c:choose>
-	        	<c:when test="${empty take_db}">
-	        		더미텍스트 만들기
-	        	</c:when>
-	        	<c:otherwise>
-	        		다시 만들기
-	        	</c:otherwise>
-	        </c:choose>
-        </button>
+	        <button class="makeDT" onclick="createDTMBtn()">
+		        <c:choose>
+		        	<c:when test="${empty take_db}">
+		        		더미텍스트 만들기
+		        	</c:when>
+		        	<c:otherwise>
+		        		다시 만들기
+		        	</c:otherwise>
+		        </c:choose>
+	        </button>
         </div>
         
         <c:if test="${not empty take_db}">
-        		<hr class="textLine">
-        		<button id="copyBtn" onclick="copyText()">복사</button>
-        </c:if>
-        <div id="dummyText">
-	        <c:forEach var="text" items="${requestScope.text}">
-					${text}
-			</c:forEach>
-		</div>
-		
+        	<hr class="textLine">
+        	<button id="copyBtn" onclick="copyText()">복사</button>
+        
+	        <div id="dummyText">
+		        <c:forEach var="text" items="${requestScope.text}">
+						${text}
+				</c:forEach>
+			</div>
+			
+			<div id="last_3btn">
+				<button id="moreText" class="afterTextBtn" onclick="MorLText(0)">조금 더 필요해요</button>
+				<button id="lessText" class="afterTextBtn" onclick="MorLText(1)">너무 많아요</button>
+				<button id="contactUs" class="afterTextBtn">의견이 있어요</button>
+			</div>
+		</c:if>
         <footer style="font-size: 15px; color: #444;">SOFTEN PJT © MIB</footer>
 			
 	</body>
