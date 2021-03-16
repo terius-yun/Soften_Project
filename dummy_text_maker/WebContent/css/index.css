@@ -1,0 +1,146 @@
+@charset "UTF-8";
+
+			body{
+       			width: 958px;
+       			margin: auto;
+       		}
+            .centerText{
+                text-align: center;
+            }
+            .centerTextTitle{
+                margin-top: 84px;
+                margin-bottom: 20px;
+            }
+            .centerTextSubtitle{
+                margin-bottom: 72px;
+            }
+            #button_group1{width: 38%; float: left;}
+            #button_group2{width: 38%; float: left;}
+            #button_group3{width: 24%; float: right;}
+            .menu{/*pupose title단*/
+                border: 1.3px solid;
+                width: 290px;
+                height: 44px;
+                font-size: 18px;
+                padding-left: 30px;
+                padding-top: 20px;
+                display: inline-block;
+            }
+            .hide{/*pupose list단*/
+                width: 290px;
+                border: 1.3px solid;
+                border-top: none;
+                list-style: none;
+                display:none;
+                padding-left: 30px;
+                margin-top: 0px;
+                font-size: 18px;
+                background-color: #fefef4;
+            }.hide li{
+                list-style: none;
+                padding: 18px 0px;
+            }
+            .hide a:hover{
+                color: #003cff;
+            }
+            .selected{/*에 쓸거에요. , 필요해요.*/
+                display: none;
+                font-size: 18px;
+            }
+            /* 아랫방향 화살표 */
+            .arrow_bottom span{
+                content: '';
+                width: 20px; /* 사이즈 */
+                height: 20px; /* 사이즈 */
+                border-top: 1px solid #121212; /* 선 두께 */
+                border-right: 1px solid #121212; /* 선 두께 */
+                display: block;
+                transform: rotate(135deg); /* 각도 */
+                float: left;
+                margin-top: -30px;
+                margin-left: 250px;
+            }
+            /* 아랫방향 화살표 */
+
+            .makeDT{/*만들기 버튼*/
+                width: 219px;
+                height: 42px;
+                margin-top: 10px;
+                display: inline-block;
+                border: 1px solid #003cff;
+                font-size: 18px;
+                color: #003cff;
+                border-radius: 8px;
+                box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.32);
+                background-color: #fff;
+                outline: none;
+            }
+            .textLine{
+            	margin-top: 376px;
+            	margin-bottom: 70px;
+            }
+            #copyBtn{
+            	float: right;
+            	width: 50px;
+            	height: 50px;
+            }
+            #dummyText{
+            	width:90%;
+            	height:200px;
+            	overflow: auto;
+            	font-size: 18px;
+            	color: #666;
+            }
+            #dummyText >p{
+            	margin: 0px;
+            }
+            #last_3btn{
+            	margin-top: 20px;
+            }
+            .afterTextBtn{
+            	width: 172px;
+  				height: 40px;
+  				border: solid 1.3px;
+            	border-radius: 8px;
+            	font-size: 18px;
+            	outline: none;
+            }
+            #contactUs{
+            	float: right;
+            }
+            
+            
+            /*모달창*/
+            .modal{ 
+		        position:absolute; 
+		        width:100%;
+		        height:100%; 
+		        background: rgba(0,0,0,0.8); 
+		        top:0; 
+		        left:0; 
+		        display:none;
+	        }
+	        .modal_content{
+	            position: absolute;
+	            top:50%; 
+	            left:50%;
+	            transform: translate(-50%, -50%);
+	            background-color: white;
+	            border-radius: 50px;
+	            width: 500px;
+	            height: 300px;
+	            text-align: center;
+	        }
+	        .modal_content :first-child{
+	            margin-top: 20%;
+	        }
+	        /*모달창*/
+	        
+	        footer{
+                position: absolute;
+                top: 898px;
+                bottom: 44px;
+                width: 958px;
+                text-align: center;
+                clear: both;
+            }

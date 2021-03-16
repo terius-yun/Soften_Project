@@ -5,124 +5,8 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-        <title>Document</title>
-        <style>
-       		body{
-       			width: 958px;
-       			margin: auto;
-       		}
-            .centerText{
-                text-align: center;
-            }
-            .centerTextTitle{
-                margin-top: 84px;
-                margin-bottom: 20px;
-            }
-            .centerTextSubtitle{
-                margin-bottom: 72px;
-            }
-            #button_group1{width: 38%; float: left;}
-            #button_group2{width: 38%; float: left;}
-            #button_group3{width: 24%; float: right;}
-            .menu{/*pupose title단*/
-                border: 1.3px solid;
-                width: 290px;
-                height: 44px;
-                font-size: 18px;
-                padding-left: 30px;
-                padding-top: 20px;
-                display: inline-block;
-            }
-            .hide{/*pupose list단*/
-                width: 290px;
-                border: 1.3px solid;
-                border-top: none;
-                list-style: none;
-                display:none;
-                padding-left: 30px;
-                margin-top: 0px;
-                font-size: 18px;
-                background-color: #fefef4;
-            }.hide li{
-                list-style: none;
-                padding: 18px 0px;
-            }
-            .hide a:hover{
-                color: #003cff;
-            }
-            .selected{/*에 쓸거에요. , 필요해요.*/
-                display: none;
-                font-size: 18px;
-            }
-            /* 아랫방향 화살표 */
-            .arrow_bottom span{
-                content: '';
-                width: 20px; /* 사이즈 */
-                height: 20px; /* 사이즈 */
-                border-top: 1px solid #121212; /* 선 두께 */
-                border-right: 1px solid #121212; /* 선 두께 */
-                display: block;
-                transform: rotate(135deg); /* 각도 */
-                float: left;
-                margin-top: -30px;
-                margin-left: 250px;
-            }
-            /* 아랫방향 화살표 */
-
-            .makeDT{/*만들기 버튼*/
-                width: 219px;
-                height: 42px;
-                margin-top: 10px;
-                display: inline-block;
-                border: 1px solid #003cff;
-                font-size: 18px;
-                color: #003cff;
-                border-radius: 8px;
-                box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.32);
-                background-color: #fff;
-                outline: none;
-            }
-            .textLine{
-            	margin-top: 376px;
-            	margin-bottom: 70px;
-            }
-            #copyBtn{
-            	float: right;
-            }
-            #dummyText{
-            	width:90%;
-            	height:200px;
-            	overflow: auto;
-            	font-size: 18px;
-            	color: #666;
-            }
-            #dummyText >p{
-            	margin: 0px;
-            }
-            #last_3btn{
-            	margin-top: 20px;
-            }
-            .afterTextBtn{
-            	width: 172px;
-  				height: 40px;
-  				border: solid 1.3px;
-            	border-radius: 8px;
-            	font-size: 18px;
-            	outline: none;
-            }
-            #contactUs{
-            	float: right;
-            }
-            
-            footer{
-                position: absolute;
-                top: 898px;
-                bottom: 44px;
-                width: 958px;
-                text-align: center;
-                clear: both;
-            }
-        </style>
+        <title>Soften</title>
+        <link rel="stylesheet" href="css/index.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
         $(document).ready(function(){
@@ -149,14 +33,37 @@
                 }else{
                     submenu.slideDown();
                 }
-            });
+            });//슬라이드 이벤트
+            
+            //더미텍스트 복사
+            $("#copyBtn").on("click", function(){
+            	copyText();
+            	alert("복사되었습니다 :)");
+            })
+            //더미텍스트 복사
+            
+            //모달창
+            $("#contactUs").on("click",function(){
+                $(".modal").fadeIn();
+            })
+            //모달창 생성이후 다른공간을 누르면 사라지기
+            $(document).mouseup(function(e){
+                var container = $('.modal')
+
+                if (container.has(e.target).length == 0) {
+                    $(".modal").fadeOut(500);
+                }
+            }); //모달창 생성이후 다른공간을 누르면 사라지기
+            //모달창
+            
         });
-        var purpose;
+        
+        var purpose = 0;
         <c:set var="purpose" value="${requestScope.purpose}"/>
 		    	<c:if test="${!empty purpose}">
 		    		purpose = "${purpose}";
 		    	</c:if>
-        var volume;
+        var volume = 0;
         <c:set var="volume" value="${requestScope.volume}"/>
         		<c:if test="${!empty volume}">
 		    		volume = ${volume};
@@ -200,28 +107,33 @@
         }
         
         function createDTMBtn(){//텍스트 만들기 이벤트
-        	var form = document.createElement('form');
-        	form.setAttribute('method', 'get');
-        	form.setAttribute('action', 'TextOutputAction.do');
-        	document.charset = "utf-8";
-        	
-        	var purposeField = document.createElement('input');
-        	purposeField.setAttribute('type', 'hidden');
-        	purposeField.setAttribute('name', "purpose");
-        	purposeField.setAttribute('value', purpose);
-			form.appendChild(purposeField);
-			document.body.appendChild(form);
-			
-			var volumeField = document.createElement('input');
-			volumeField.setAttribute('type', 'hidden');
-			volumeField.setAttribute('name', "volume");
-			volumeField.setAttribute('value', volume);
-			form.appendChild(volumeField);
-			document.body.appendChild(form);
-			form.submit();
+        	if(purpose == 0){
+        		alert("사용하실 곳을 선택해주세요");
+        	}else if(volume == 0){
+        		alert("필요한 양을 선택해주세요");
+        	}else{
+	        	var form = document.createElement('form');
+	        	form.setAttribute('method', 'get');
+	        	form.setAttribute('action', 'TextOutputAction.do');
+	        	document.charset = "utf-8";
+	        	
+	        	var purposeField = document.createElement('input');
+	        	purposeField.setAttribute('type', 'hidden');
+	        	purposeField.setAttribute('name', "purpose");
+	        	purposeField.setAttribute('value', purpose);
+				form.appendChild(purposeField);
+				document.body.appendChild(form);
+				
+				var volumeField = document.createElement('input');
+				volumeField.setAttribute('type', 'hidden');
+				volumeField.setAttribute('name', "volume");
+				volumeField.setAttribute('value', volume);
+				form.appendChild(volumeField);
+				document.body.appendChild(form);
+				form.submit();
+        	}
             console.log("만들기 버튼 클릭됨.");
-        }
-        
+        }        
         function copyText() {// 텍스트 복사
         	var obj = document.getElementById("dummyText");
         	
@@ -235,6 +147,9 @@
         	document.execCommand("copy"); //복사
         	sel.removeRange(range); //선택 정보 삭제
 		}
+
+        
+
         <c:set var="totalMnL" value="${requestScope.totalMnL}"/>
         	var moreVol;
         	<c:choose>
@@ -282,7 +197,7 @@
 				<c:choose>
 					<c:when test="${totalMnL eq 0}">
 						if(i == 1){
-							alert("제일 적은 양이에요.");
+							alert("제일 적은 양이에요 :(");
 						}else{
 							form.submit();
 						}
@@ -346,7 +261,7 @@
         
         <c:if test="${not empty take_db}">
         	<hr class="textLine">
-        	<button id="copyBtn" onclick="copyText()">복사</button>
+        	<img id="copyBtn" alt="복사버튼" src="img/copy_icon.png">
         
 	        <div id="dummyText">
 		        <c:forEach var="text" items="${requestScope.text}">
@@ -360,6 +275,12 @@
 				<button id="contactUs" class="afterTextBtn">의견이 있어요</button>
 			</div>
 		</c:if>
+		<div class="modal">
+	        <div class="modal_content">
+	                <p>Contect Us:</p>
+	                <p>soften.developer@gmail.com</p>
+	        </div>
+	    </div>
         <footer style="font-size: 15px; color: #444;">SOFTEN PJT © MIB</footer>
 			
 	</body>

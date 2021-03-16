@@ -26,18 +26,17 @@
     <!--
     <Manager pathname="" />
     -->
-        <!-- 설정을 위한 코드추가 -->
-    	<Resource auth="Container" 
-          name="jdbc/DTM" 
-          driverClassName="oracle.jdbc.driver.OracleDriver" 
-          type="javax.sql.DataSource" 
-          url="jdbc:oracle:thin:@localhost:1521:xe" 
-          username="DTM_DB"
-          password="0035" 
-          loginTimeout="10" 
-          maxActive="50" 
-          maxIdle="20"
-          maxWait="5000" 
-          testOnBorrow="true" />
- 		<!-- 설정을 위한 코드추가 -->
+            <!-- 설정을 위한 코드추가 -->
+                    <Resource auth="Container" 
+                    name="jdbc/DTM"
+                    driverClassName="oracle.jdbc.driver.OracleDriver" 
+                    type="javax.sql.DataSource" 
+                    url="jdbc:oracle:thin:@localhost:1521:xe" 
+                    username="DTM_DB"
+                    password="0035" 
+                    loginTimeout="10" 
+                    maxActive="50" 
+                    maxIdle="20"
+                    maxWait="5000" 
+                    testOnBorrow="true" />
 </Context>
